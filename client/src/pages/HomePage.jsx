@@ -139,207 +139,183 @@ function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-emerald-50/60">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <header className="mb-8">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-emerald-700">
-                Kozhikode Restaurant Discovery
-              </p>
-              <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-                Find great places to eat in the city
-              </h1>
-              <p className="mt-3 max-w-2xl text-slate-600">
-                Explore trusted local restaurants, compare ratings and price range,
-                and pick your next meal spot in seconds.
-              </p>
-            </div>
-            {/* Owner Dashboard Button - Hidden for now */}
-            {/* <Link
-              to="/owner/dashboard"
-              className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+    <main className="min-h-screen bg-slate-50" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+      {/* Hero Section */}
+      <section className="relative w-full bg-[#1a1a2e] px-4 py-20 sm:px-6 lg:px-8 shadow-xl overflow-hidden">
+        {/* Warm Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#1a1a2e] via-[#1a1a2e]/90 to-orange-900/40 pointer-events-none"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-orange-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-amber-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div className="relative mx-auto max-w-5xl text-center">
+          <h1 
+            className="text-4xl font-bold text-white sm:text-5xl md:text-6xl tracking-tight mb-4" 
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Discover Kozhikode's Best
+          </h1>
+          <p className="text-xl md:text-2xl text-orange-400 font-medium mb-12">
+            Restaurants, Cafes & Local Favourites
+          </p>
+          
+          {/* AI Search Bar */}
+          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] p-2 flex flex-col sm:flex-row items-center gap-2 mb-6">
+            <span className="text-3xl pl-4 hidden sm:inline-block" role="img" aria-label="robot">🤖</span>
+            <input
+              type="text"
+              value={aiQuery}
+              onChange={(event) => setAiQuery(event.target.value)}
+              placeholder="Ask AI... like 'cheap biryani open after 9pm'"
+              className="w-full flex-1 bg-transparent px-4 py-3 text-lg text-slate-800 placeholder-slate-400 outline-none"
+            />
+            <button
+              type="button"
+              onClick={handleAiSearch}
+              disabled={isAiSearching || !aiQuery.trim()}
+              className="w-full sm:w-auto rounded-xl bg-orange-500 px-8 py-3 text-lg font-semibold text-white shadow-md transition hover:bg-orange-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Owner Dashboard
-            </Link> */}
+              {isAiSearching ? "Thinking..." : "Search"}
+            </button>
           </div>
-        </header>
+          
+          {aiError && (
+            <p className="text-sm text-red-400 mb-4">{aiError}</p>
+          )}
 
-        {!isLoading && !error && restaurants.length > 0 && (
-          <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <input
-                type="text"
-                value={aiQuery}
-                onChange={(event) => setAiQuery(event.target.value)}
-                placeholder="Try: cheap biryani open after 9pm..."
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-              />
+          {isAiActive && (
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+              <p className="text-sm text-white/90 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+                Showing <span className="font-bold text-orange-400">{aiResults.length}</span> results for: <span className="italic">"{lastAiQuery}"</span>
+              </p>
               <button
                 type="button"
-                onClick={handleAiSearch}
-                disabled={isAiSearching || !aiQuery.trim()}
-                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={clearAiSearch}
+                className="text-sm text-white hover:text-orange-300 underline underline-offset-4 transition"
               >
-                {isAiSearching ? "AI is thinking..." : "Search"}
+                Clear AI Search
               </button>
-              {isAiActive && (
+            </div>
+          )}
+
+          {/* Regular Filters Row */}
+          {!isAiActive && restaurants.length > 0 && (
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Name..."
+                className="rounded-full border-2 border-white/10 bg-white/5 px-5 py-2 text-sm text-white outline-none placeholder-white/50 backdrop-blur-md transition hover:bg-white/10 focus:border-orange-500 focus:bg-white/10"
+              />
+              <select
+                value={selectedCuisine}
+                onChange={(event) => setSelectedCuisine(event.target.value)}
+                className="rounded-full border-2 border-white/10 bg-white/5 px-5 py-2 text-sm text-white outline-none backdrop-blur-md transition hover:bg-white/10 focus:border-orange-500 focus:bg-white/10 [&>option]:text-slate-800"
+              >
+                <option value="">Cuisine</option>
+                {cuisineOptions.map((cuisine) => (
+                  <option key={cuisine} value={cuisine}>
+                    {cuisine}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={selectedArea}
+                onChange={(event) => setSelectedArea(event.target.value)}
+                className="rounded-full border-2 border-white/10 bg-white/5 px-5 py-2 text-sm text-white outline-none backdrop-blur-md transition hover:bg-white/10 focus:border-orange-500 focus:bg-white/10 [&>option]:text-slate-800"
+              >
+                <option value="">Area</option>
+                {areaOptions.map((area) => (
+                  <option key={area} value={area}>
+                    {area}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={selectedPrice}
+                onChange={(event) => setSelectedPrice(event.target.value)}
+                className="rounded-full border-2 border-white/10 bg-white/5 px-5 py-2 text-sm text-white outline-none backdrop-blur-md transition hover:bg-white/10 focus:border-orange-500 focus:bg-white/10 [&>option]:text-slate-800"
+              >
+                <option value="">Price</option>
+                {PRICE_OPTIONS.map((price) => (
+                  <option key={price} value={price}>
+                    {price}
+                  </option>
+                ))}
+              </select>
+              {hasActiveFilters && (
                 <button
                   type="button"
-                  onClick={clearAiSearch}
-                  className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                  onClick={clearFilters}
+                  className="rounded-full border-2 border-orange-500/50 text-orange-400 bg-transparent px-4 py-2 text-sm font-medium transition hover:bg-orange-500/10"
                 >
-                  Clear AI Search
+                  Clear Filters
                 </button>
               )}
             </div>
-            {aiError && (
-              <p className="mt-3 text-sm text-red-700">{aiError}</p>
-            )}
-            {isAiActive && (
-              <p className="mt-3 text-sm text-slate-700">
-                <span className="font-semibold text-slate-900">
-                  {aiResults.length}
-                </span>{" "}
-                restaurants found for: <span className="font-medium">{lastAiQuery}</span>
-              </p>
-            )}
-          </section>
-        )}
+          )}
+        </div>
+      </section>
 
-        {!isLoading && !error && restaurants.length > 0 && (
-          <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
-              <label className="lg:col-span-2">
-                <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Search
-                </span>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Search by restaurant name..."
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-                />
-              </label>
-
-              <label>
-                <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Cuisine
-                </span>
-                <select
-                  value={selectedCuisine}
-                  onChange={(event) => setSelectedCuisine(event.target.value)}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-                >
-                  <option value="">All cuisines</option>
-                  {cuisineOptions.map((cuisine) => (
-                    <option key={cuisine} value={cuisine}>
-                      {cuisine}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label>
-                <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Area
-                </span>
-                <select
-                  value={selectedArea}
-                  onChange={(event) => setSelectedArea(event.target.value)}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-                >
-                  <option value="">All areas</option>
-                  {areaOptions.map((area) => (
-                    <option key={area} value={area}>
-                      {area}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label>
-                <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Price range
-                </span>
-                <select
-                  value={selectedPrice}
-                  onChange={(event) => setSelectedPrice(event.target.value)}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-                >
-                  <option value="">All prices</option>
-                  {PRICE_OPTIONS.map((price) => (
-                    <option key={price} value={price}>
-                      {price}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            <div className="mt-4 flex items-center justify-between gap-3">
-              <p className="text-sm text-slate-600">
-                Showing{" "}
-                <span className="font-semibold text-slate-900">
-                  {filteredRestaurants.length}
-                </span>{" "}
-                of {restaurants.length} restaurants
-              </p>
-              <button
-                type="button"
-                onClick={clearFilters}
-                disabled={!hasActiveFilters}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Clear filters
-              </button>
-            </div>
-          </section>
-        )}
-
+      {/* Main Content */}
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         {isLoading && (
-          <div className="flex min-h-60 items-center justify-center rounded-2xl border border-slate-200 bg-white">
-            <div className="flex items-center gap-3 text-slate-600">
-              <span className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-600" />
-              <span className="text-sm font-medium">Loading restaurants...</span>
+          <div className="flex min-h-[40vh] items-center justify-center">
+            <div className="flex flex-col items-center gap-4 text-slate-500">
+              <span className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-orange-500" />
+              <span className="text-base font-medium tracking-wide">Loading amazing food...</span>
             </div>
           </div>
         )}
 
         {!isLoading && error && (
-          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-5 text-red-700">
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center text-red-600 shadow-sm">
             {error}
           </div>
         )}
 
+        {!isLoading && !error && restaurants.length > 0 && (
+          <div className="mb-8 border-b border-slate-200 pb-4">
+            <h2 className="text-2xl font-bold text-slate-800" style={{ fontFamily: "'Playfair Display', serif" }}>
+              {displayedRestaurants.length} restaurants found in Kozhikode
+            </h2>
+          </div>
+        )}
+
         {!isLoading && !error && restaurants.length === 0 && (
-          <div className="rounded-2xl border border-slate-200 bg-white px-4 py-5 text-slate-600">
+          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center text-slate-500 shadow-sm">
             No restaurants found right now.
           </div>
         )}
 
         {!isLoading && !error && restaurants.length > 0 && displayedRestaurants.length === 0 && (
-          <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="col-span-full rounded-2xl border border-slate-200 bg-white px-4 py-6 text-center text-slate-600">
-              {isAiActive
-                ? "No restaurants match your AI search."
-                : "No restaurants match your current filters."}
-            </div>
-          </section>
+          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center text-slate-500 shadow-sm">
+            {isAiActive
+              ? "No restaurants match your AI search. Try something else!"
+              : "No restaurants match your current filters. Try relaxing them."}
+          </div>
         )}
 
         {!isLoading && !error && displayedRestaurants.length > 0 && (
-          <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <section className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {displayedRestaurants.map((restaurant, index) => (
-              <RestaurantCard
+              <div 
                 key={restaurant.id || restaurant.name || index}
-                restaurant={restaurant}
-              />
+                className="animate-[fade-in_0.5s_ease-out_both]"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <RestaurantCard restaurant={restaurant} />
+              </div>
             ))}
           </section>
         )}
       </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes fade-in {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+      `}} />
     </main>
   );
 }

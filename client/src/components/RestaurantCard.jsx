@@ -26,32 +26,45 @@ function RestaurantCard({ restaurant }) {
   return (
     <Link
       to={`/restaurant/${restaurantId}`}
-      className="block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+      className="group relative block h-full overflow-hidden rounded-2xl bg-white p-6 shadow-[0_4px_20px_-4px_rgba(234,88,12,0.1)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_30px_-4px_rgba(234,88,12,0.15)] focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
       aria-label={`View details for ${name}`}
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      <article>
-        <div className="mb-3 flex items-start justify-between gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">{name}</h2>
-          <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+      <article className="flex h-full flex-col">
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <h2 className="text-xl font-bold text-slate-800 line-clamp-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+            {name}
+          </h2>
+          <span className="shrink-0 rounded-full bg-orange-100 px-3 py-1 text-sm font-bold text-orange-600 shadow-sm">
             {priceRange}
           </span>
         </div>
 
-        <div className="mb-4 flex flex-wrap items-center gap-2 text-sm text-slate-600">
-          <span className="rounded-md bg-slate-100 px-2 py-1">{cuisine}</span>
-          <span className="text-slate-400">•</span>
-          <span>{area}</span>
-        </div>
-
-        <div className="mb-3 flex items-center gap-2">
-          <span className="text-amber-500">{getStarRating(rating)}</span>
-          <span className="text-sm text-slate-500">
-            {rating.toFixed(1)} average rating
+        <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">
+          <span className="rounded-full bg-emerald-100 px-3 py-1 font-medium text-emerald-700">
+            {cuisine}
+          </span>
+          <span className="flex items-center text-slate-500 font-medium ml-1">
+            <span role="img" aria-label="pin" className="mr-1">📍</span> {area}
           </span>
         </div>
 
-        <p className="text-sm leading-6 text-slate-600">{description}</p>
+        <div className="mb-4 flex items-center gap-2">
+          <span className="text-xl tracking-widest text-amber-400">
+            {getStarRating(rating)}
+          </span>
+          <span className="text-sm font-medium text-slate-500">
+            ({rating.toFixed(1)})
+          </span>
+        </div>
+
+        <p className="mt-auto text-sm leading-relaxed text-slate-500 line-clamp-3">
+          {description}
+        </p>
       </article>
+
+      {/* Bottom Orange Hover Line */}
+      <div className="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-orange-500 transition-transform duration-300 group-hover:scale-x-100"></div>
     </Link>
   );
 }
