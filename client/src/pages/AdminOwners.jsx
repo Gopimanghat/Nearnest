@@ -30,7 +30,7 @@ function AdminOwners() {
     try {
       setIsLoading(true);
       setError("");
-      const response = await fetch("http://localhost:5000/api/owners/all");
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/owners/all`);
       if (!response.ok) throw new Error("Failed to fetch owners.");
       const data = await response.json();
       setOwners(Array.isArray(data) ? data : []);
@@ -50,7 +50,7 @@ function AdminOwners() {
       setError("");
       setBusyId(String(ownerId));
       const response = await fetch(
-        `http://localhost:5000/api/owners/${ownerId}/${action}`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/owners/${ownerId}/${action}`,
         { method: "PATCH" }
       );
       if (!response.ok) {

@@ -37,7 +37,7 @@ function AdminRestaurants() {
     try {
       setIsLoading(true);
       setError("");
-      const response = await fetch("http://localhost:5000/api/admin/restaurants");
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/restaurants`);
       if (!response.ok) throw new Error("Failed to fetch restaurants.");
       const data = await response.json();
       setRestaurants(Array.isArray(data) ? data : []);
@@ -57,7 +57,7 @@ function AdminRestaurants() {
       setActionError("");
       setBusyId(String(restaurantId));
       const response = await fetch(
-        `http://localhost:5000/api/restaurants/${restaurantId}/status`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants/${restaurantId}/status`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -83,7 +83,7 @@ function AdminRestaurants() {
       setActionError("");
       setBusyId(String(restaurantId));
       const response = await fetch(
-        `http://localhost:5000/api/restaurants/${restaurantId}`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants/${restaurantId}`,
         { method: "DELETE" }
       );
       if (!response.ok) {
@@ -110,7 +110,7 @@ function AdminRestaurants() {
     setActionError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/restaurants", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

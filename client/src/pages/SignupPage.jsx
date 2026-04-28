@@ -18,7 +18,7 @@ function SignupPage() {
     setIsLoading(true);
 
     try {
-      const ownerResponse = await fetch("http://localhost:5000/api/owners/signup", {
+      const ownerResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/owners/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

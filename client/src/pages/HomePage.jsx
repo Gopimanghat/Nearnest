@@ -37,7 +37,7 @@ function HomePage() {
     const fetchRestaurants = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("http://localhost:5000/api/restaurants");
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants`);
 
         if (!response.ok) {
           throw new Error("Could not load restaurants from the server.");
@@ -106,7 +106,7 @@ function HomePage() {
     try {
       setIsAiSearching(true);
       setAiError("");
-      const response = await fetch("http://localhost:5000/api/ai/search", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/ai/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),

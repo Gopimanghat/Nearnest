@@ -59,7 +59,7 @@ function RestaurantDetailPage() {
         setError("");
 
         const response = await fetch(
-          `http://localhost:5000/api/restaurants/${id}`
+          `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants/${id}`
         );
 
         if (!response.ok) {
@@ -88,7 +88,7 @@ function RestaurantDetailPage() {
         setReviewsError("");
 
         const response = await fetch(
-          `http://localhost:5000/api/restaurants/${id}/reviews`
+          `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants/${id}/reviews`
         );
 
         if (!response.ok) {
@@ -111,7 +111,7 @@ function RestaurantDetailPage() {
     const fetchAiSummary = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/ai/reviews/${id}/summary`
+          `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/ai/reviews/${id}/summary`
         );
         if (!response.ok) {
           setAiSummary(null);
@@ -195,7 +195,7 @@ function RestaurantDetailPage() {
     try {
       setIsSubmitting(true);
       const response = await fetch(
-        `http://localhost:5000/api/restaurants/${id}/reviews`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants/${id}/reviews`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

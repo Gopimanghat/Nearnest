@@ -50,7 +50,7 @@ function OwnerDashboardPage() {
 
       const encodedEmail = encodeURIComponent(email);
       const statusResponse = await fetch(
-        `http://localhost:5000/api/owners/status/${encodedEmail}`
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/owners/status/${encodedEmail}`
       );
       const statusData = await statusResponse.json().catch(() => ({}));
       if (!statusResponse.ok) {
@@ -62,7 +62,7 @@ function OwnerDashboardPage() {
 
       if (status === "approved") {
         const restaurantResponse = await fetch(
-          `http://localhost:5000/api/restaurants?email=${encodeURIComponent(email)}`
+          `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants?email=${encodeURIComponent(email)}`
         );
         const restaurantData = await restaurantResponse.json().catch(() => []);
         if (!restaurantResponse.ok) {
@@ -121,7 +121,7 @@ function OwnerDashboardPage() {
       let response;
       if (existingRestaurantId) {
         response = await fetch(
-          `http://localhost:5000/api/restaurants/${existingRestaurantId}`,
+          `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants/${existingRestaurantId}`,
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
@@ -129,7 +129,7 @@ function OwnerDashboardPage() {
           }
         );
       } else {
-        response = await fetch("http://localhost:5000/api/restaurants", {
+        response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/restaurants`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

@@ -15,8 +15,8 @@ function AdminDashboard() {
       setError("");
 
       const [restaurantResponse, ownersResponse] = await Promise.all([
-        fetch("http://localhost:5000/api/admin/restaurants"),
-        fetch("http://localhost:5000/api/owners/pending"),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/restaurants`),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/owners/pending`),
       ]);
 
       if (!restaurantResponse.ok) throw new Error("Failed to fetch restaurants.");
